@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Scoreboard</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* ฟอนต์การ์ตูน */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #FF5733, #FF8C00); /* พื้นหลังสีสดใสเหมือนการ์ตูน */
+        }
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+            font-size: 2rem;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 3px solid #FF4500; /* เส้นขอบสีสดใส */
+        }
+        .team {
+            text-align: center;
+            padding: 10px;
+        }
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF6347; /* ใช้สีแดงการ์ตูน */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* การทำเงาสำหรับชื่อทีม */
+        }
+        .team-score {
+            font-size: 3.5rem;
+            color: #FF6347; /* สีแดงสด */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .time {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* เงาสีดำ */
+        }
+        .add-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            background-color: #FF6347; /* ปุ่มสีแดงสด */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .add-btn:hover {
+            transform: scale(1.2);
+            background-color: #FF4500; /* สีเมื่อ hover */
+        }
+        #time {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="time" id="time">ครึ่งแรก: 0:00</div>
+
+    <div class="scoreboard">
+        <div class="team team-purple">
+            <div class="team-name">ทีม สีม่วง</div>
+            <div class="team-score" id="teamPurpleScore">0</div>
+            <button class="add-btn" onclick="addScore('purple')"></button>
+        </div>
+        <div class="team team-black">
+            <div class="team-name">ทีม สีแดง</div>
+            <div class="team-score" id="teamBlackScore">0</div>
+            <button class="add-btn" onclick="addScore('black')"></button>
+        </div>
+    </div>
+
+    <script>
+        let purpleScore = 0;
+        let blackScore = 0;
+        let currentTime = 0;
+        let currentSecond = 0;
+        let isFirstHalf = true;
+
+        // ฟังก์ชันเพิ่มคะแนน
+        function addScore(team) {
+            if (team === 'purple') {
+                purpleScore++;
+                document.getElementById('teamPurpleScore').textContent = purpleScore;
+            } else if (team === 'black') {
+                blackScore++;
+                document.getElementById('teamBlackScore').textContent = blackScore;
+            }
+        }
+
+        // ฟังก์ชันอัพเดตเวลา
+        function updateTime() {
+            if (isFirstHalf) {
+                if (currentTime < 45) {
+                    currentSecond++;
+                    if (currentSecond === 60) {
+                        currentTime++;
+                        currentSecond = 0;
+                    }
+                    document.getElementById('time').textContent = `ครึ่งแรก: ${currentTime}:${currentSecond < 10 ? '0' : ''}${currentSecond}`;
+                } else {
+                    isFirstHalf = false;
+                    currentTime = 45;
+                    currentSecond = 0;
+                    document.getElementById('time').textContent = `ครึ่งหลัง: ${currentTime}:${currentSecond < 10 ? '0' : ''}${currentSecond}`;
+                }
+            } else {
+                if (currentTime < 90) {
+                    currentSecond++;
+                    if (currentSecond === 60) {
+                        currentTime++;
+                        currentSecond = 0;
+                    }
+                    document.getElementById('time').textContent = `ครึ่งหลัง: ${currentTime}:${currentSecond < 10 ? '0' : ''}${currentSecond}`;
+                }
+            }
+        }
+
+        // เริ่มอัพเดตเวลาทุก 1 วินาที
+        setInterval(updateTime, 1000);
+    </script>
+
+</body>
+</html>
